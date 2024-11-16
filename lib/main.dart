@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     // Initialize the PostController and fetch posts when the app starts
     final PostController postController = Get.put(PostController());
-    postController.fetchPosts();  // Fetch the posts on app start
+    postController.fetchPosts(context);  // Fetch the posts on app start
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_posts_app/components/postController.dart';
+import 'package:flutter_posts_app/components/timerWidget.dart';
 import 'package:get/get.dart';
 import '../model/post_model.dart';
 
@@ -41,6 +42,7 @@ class PostListItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(child: Text(post.title, maxLines: 2, overflow: TextOverflow.ellipsis)),
+            TimerWidget(postId: post.id),
           ],
         ),
       ),

@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../components/snackBar.dart';
 import '../model/post_model.dart';
 
 class PostDetailScreen extends StatelessWidget {
@@ -15,10 +18,10 @@ class PostDetailScreen extends StatelessWidget {
         title: Text('Post Detail'),
       ),
       body: FutureBuilder(
-        future: fetchPostDetails(postId),
+        future: fetchPostDetails(postId,context),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
@@ -40,12 +43,22 @@ class PostDetailScreen extends StatelessWidget {
     );
   }
 
-  Future<Post> fetchPostDetails(int postId) async {
-    final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts/$postId'));
-    if (response.statusCode == 200) {
-      return Post.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load post details');
+  Future<Post> fetchPostDetails(int postId,BuildContext context) async {
+    try{
+      final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts/$postId'));
+      if (response.statusCode == 200) {
+        return Post.fromJson(json.decode(response.body));
+      } else {
+        throw Exception('Failed to load post details');
+      }
+    }on SocketException catch(e){
+      showCustomSnackBar(context,e.toString(),isError:false);
+      rethrow;
     }
+    catch(e){
+      showCustomSnackBar(context,'Unexpected error: $e',isError:false);
+      rethrow;
+    }
+
   }
 }

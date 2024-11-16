@@ -27,7 +27,7 @@ class PostListScreen extends StatelessWidget {
                   // Navigate to post detail screen
                   Get.to(PostDetailScreen(postId: post.id))?.then((_) {
                     // After returning from the detail screen, refresh the list
-                    postController.fetchPosts();
+                    postController.fetchPosts(context);
                   });
                 },
               );
